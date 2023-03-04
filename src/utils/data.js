@@ -2,7 +2,7 @@ const data = {
     products: [
         {
             name: "Free Shirt",
-            slug: "free Shirt",
+            slug: "free-shirt",
             category: "Shirts",
             image: '/images/shirt1.jpg',
             price: 70,
@@ -14,7 +14,7 @@ const data = {
         },
         {
             name: "Fit Shirt",
-            slug: "fit Shirt",
+            slug: "fit-shirt",
             category: "Shirts",
             image: '/images/shirt2.jpg',
             price: 100,
@@ -26,7 +26,7 @@ const data = {
         },
         {
             name: "Fit Pants",
-            slug: "fit Pants",
+            slug: "fit-pants",
             category: "Pants",
             image: '/images/pants1.jpg',
             price: 100,
@@ -38,7 +38,7 @@ const data = {
         },
         {
             name: "Fit Pants",
-            slug: "fit Pants",
+            slug: "free-pants",
             category: "Pants",
             image: '/images/pants2.jpg',
             price: 100,
