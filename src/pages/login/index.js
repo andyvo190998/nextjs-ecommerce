@@ -42,7 +42,7 @@ const LoginScreen = () => {
                 </div>
                 <div className='mb-4'>
                     Don&apos;t have an account? &nbsp;
-                    <Link href="register">Register here</Link>
+                    <Link className='text-blue-500' href="register">Register here</Link>
                 </div>
             </form>
         </Layout >
