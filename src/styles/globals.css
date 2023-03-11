@@ -10,8 +10,12 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
+span {
+  @apply text-blue-600;
+}
+
 a {
-  /* @apply text-blue-600 hover: text-blue-800; */
+  @apply text-blue-600;
 }
 
 * {
@@ -38,7 +42,7 @@ textarea {
 }
 
 .dropdown-link {
-  /* @apply flex p-2 hover: bg-gray-200; */
+  @apply flex p-2;
 }
 
 .alert-error {
