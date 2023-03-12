@@ -2,10 +2,12 @@ import CheckoutWizard from '@/components/CheckoutWizard';
 import Layout from '@/components/Layout';
 import { Store } from '@/utils/store';
 import Cookies from 'js-cookie';
+import { useRouter } from 'next/router';
 import React, { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 const ShippingScreen = () => {
+  const router = useRouter();
   const {
     handleSubmit,
     register,
@@ -16,7 +18,6 @@ const ShippingScreen = () => {
   const { dispatch, state } = useContext(Store);
   const { cart } = state;
   const { shippingAddress } = cart;
-  console.log(shippingAddress);
 
   useEffect(() => {
     if (!shippingAddress) {
@@ -117,7 +118,12 @@ const ShippingScreen = () => {
           )}
         </div>
         <div className='mb-4'>
-          <button className='primary-button'>Next</button>
+          <button
+            onClick={() => router.push('/payment')}
+            className='primary-button hover:bg-violet-200 active:bg-amber-500'
+          >
+            Next
+          </button>
         </div>
       </form>
     </Layout>
