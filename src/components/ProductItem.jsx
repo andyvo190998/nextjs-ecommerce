@@ -1,25 +1,33 @@
 /* eslint-disable @next/next/no-img-element */
 import { Store } from '@/utils/store';
+import axios from 'axios';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 import React, { useContext } from 'react';
+import { toast } from 'react-toastify';
 
 const ProductItem = ({ product }) => {
-  const router = useRouter();
+  // const router = useRouter();
   const { state, dispatch } = useContext(Store);
+  const { cart } = state;
 
-  const addToCartHandler = () => {
-    const existItem = state.cart.cartItems.find((x) => x.slug === product.slug);
+  const addToCartHandler = async (product) => {
+    const existItem = cart.cartItems.find((x) => x.slug === product.slug);
+
     const quantity = existItem ? existItem.quantity + 1 : 1;
-    if (product.countInStock < quantity) {
-      alert('Product is out of stock');
+
+    const { data } = await axios.get(`/api/products/${product._id}`);
+    console.log(data);
+
+    if (data.countInStock < quantity) {
+      toast.error('Product is out of stock');
       return;
     }
     dispatch({
       type: 'CART_ADD_ITEM',
       payload: { ...product, quantity: quantity },
     });
-    router.push('/cart');
+    toast.success('Adding successfully');
   };
   return (
     <div className='card'>
@@ -41,7 +49,7 @@ const ProductItem = ({ product }) => {
         <p className='mb-2'>{product.brand}</p>
         <p>${product.price}</p>
         <button
-          onClick={addToCartHandler}
+          onClick={() => addToCartHandler(product)}
           className='primary-button'
           type='button'
         >
