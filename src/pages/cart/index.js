@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useSession } from 'next-auth/react';
 
 const CartPage = () => {
   const { state, dispatch } = useContext(Store);
@@ -20,6 +21,8 @@ const CartPage = () => {
     dispatch({ type: 'REMOVE_ITEM', payload: item });
   };
 
+  const { data: session } = useSession();
+
   const updateCartHandler = async (item, qty) => {
     const quantity = Number(qty);
     const { data } = await axios.get(`/api/products/${item._id}`);
@@ -28,6 +31,15 @@ const CartPage = () => {
     }
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...item, quantity } });
     toast.success('updated successfully');
+  };
+
+  const handleCheckOut = () => {
+    // () => router.push('login?redirect=/shipping');
+    if (session) {
+      router.push('/shipping');
+    } else {
+      alert('Login required');
+    }
   };
 
   return (
@@ -101,7 +113,7 @@ const CartPage = () => {
               </li>
               <li>
                 <button
-                  onClick={() => router.push('login?redirect=/shipping')}
+                  onClick={handleCheckOut}
                   className='primary-button w-full'
                 >
                   Check Out
