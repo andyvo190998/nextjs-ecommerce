@@ -7,13 +7,14 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Menu } from '@headlessui/react';
 import Cookies from 'js-cookie';
+import axios from 'axios';
 
 export default function Layout({ title, children }) {
   const { status, data: session } = useSession();
 
   const { state, dispatch } = useContext(Store);
   const { cart } = state;
-  const [cartItemsCount, setCartItemsCount] = useState(0);
+  const [cartItemsCount, setCartItemsCount] = useState([]);
   const handleLogout = () => {
     dispatch({ type: 'CART_RESET' });
     Cookies.remove('cart');
@@ -21,7 +22,19 @@ export default function Layout({ title, children }) {
   };
 
   useEffect(() => {
-    setCartItemsCount(cart.cartItems.reduce((a, c) => a + c.quantity, 0));
+    const getCart = async () => {
+      if (session) {
+        const { data } = await axios.get('/api/cart');
+        dispatch({ type: 'CART_ADD_ITEM', payload: data.cart });
+      }
+    };
+    getCart();
+  }, [dispatch, session]);
+
+  useEffect(() => {
+    if (cart.cartItems) {
+      setCartItemsCount(cart.cartItems.reduce((a, c) => a + c.quantity, 0));
+    }
   }, [cart.cartItems]);
   return (
     <>

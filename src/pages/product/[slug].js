@@ -4,37 +4,66 @@ import db from '@/utils/db';
 import { Store } from '@/utils/store';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import React, { useContext } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const ProductScreen = (props) => {
   const { product } = props;
-  console.log(product);
-  const { state, dispatch } = useContext(Store);
 
-  // const { query } = useRouter()
-  // const { slug } = query
-  const router = useRouter();
+  const { dispatch } = useContext(Store);
 
   if (!product) {
     return <Layout title='Not found product'>Product Not Found</Layout>;
   }
+
   const addToCartHandler = async () => {
-    const existItem = state.cart.cartItems.find((x) => x.slug === product.slug);
-    const quantity = existItem ? existItem.quantity + 1 : 1;
+    const { data } = await axios.get('/api/cart');
 
-    const { data } = await axios.get(`/api/products/${product._id}`);
+    const newItem = {
+      itemId: product._id,
+      quantity: 1,
+      name: product.name,
+      image: product.image,
+      price: product.price,
+      countInStock: product.countInStock,
+    };
 
-    if (data.countInStock < quantity) {
-      alert('Product is out of stock');
-      return;
+    if (!data) {
+      console.log('cart is not exist');
+      toast.success('Adding successfully');
+      const { data } = await axios.post('/api/cart', newItem);
+      dispatch({
+        type: 'CART_ADD_ITEM',
+        payload: data.cart,
+      });
+    } else {
+      const existItem = data.cart.find((item) => item.itemId === product._id);
+
+      if (existItem) {
+        const updateQuantity = {
+          itemId: product._id,
+          quantity: existItem.quantity + 1,
+        };
+        try {
+          const { data } = await axios.put('/api/cart', updateQuantity);
+          dispatch({
+            type: 'CART_ADD_ITEM',
+            payload: data.cart,
+          });
+          toast.success('Adding successfully');
+        } catch (error) {
+          toast.error(error.response.data);
+        }
+      } else {
+        toast.success('Adding successfully');
+        const { data } = await axios.post('/api/cart', newItem);
+        dispatch({
+          type: 'CART_ADD_ITEM',
+          payload: data.cart,
+        });
+      }
     }
-    dispatch({
-      type: 'CART_ADD_ITEM',
-      payload: { ...product, quantity: quantity },
-    });
-    router.push('/cart');
   };
   return (
     <Layout title={product.name}>
@@ -94,7 +123,6 @@ export const getServerSideProps = async (context) => {
 
   await db.connect();
   const product = await Product.findOne({ slug }).lean();
-  console.log(product);
   await db.disconnect();
 
   return {

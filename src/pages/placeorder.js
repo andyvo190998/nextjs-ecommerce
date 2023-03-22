@@ -14,7 +14,19 @@ const PlaceOrderScreen = () => {
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
   const { cart } = state;
-  const { cartItems, shippingAddress, paymentMethod } = cart;
+  const { shippingAddress, paymentMethod } = cart;
+
+  const [cartItems, setCartItems] = useState([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      const { data } = await axios.get('/api/cart');
+      setCartItems([...data.cart]);
+    };
+    getData();
+    console.log(cartItems);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
   const price = cartItems.reduce((a, c) => a + c.quantity * c.price, 0);
@@ -70,6 +82,7 @@ const PlaceOrderScreen = () => {
   };
 
   return (
+    // <></>
     <Layout title='Place Order'>
       <CheckoutWizard activeStep={3} />
       <h1 className='mb-4 text-xl'>Place Order</h1>

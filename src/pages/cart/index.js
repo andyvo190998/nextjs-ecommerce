@@ -2,7 +2,7 @@ import Layout from '@/components/Layout';
 import { Store } from '@/utils/store';
 import Image from 'next/image';
 import Link from 'next/link';
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { XCircleIcon } from '@heroicons/react/outline';
 import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
@@ -11,26 +11,60 @@ import { toast } from 'react-toastify';
 import { useSession } from 'next-auth/react';
 
 const CartPage = () => {
-  const { state, dispatch } = useContext(Store);
-  const {
-    cart: { cartItems },
-  } = state;
+  const { dispatch } = useContext(Store);
+  const [cartItems, setCartItems] = useState([]);
+
+  useEffect(() => {
+    const getData = async () => {
+      const { data } = await axios.get('/api/cart');
+      setCartItems(data.cart);
+    };
+    getData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cartItems.length, dispatch]);
+
+  // const cartItems = [];
   const router = useRouter();
 
-  const removeItemHandler = (item) => {
-    dispatch({ type: 'REMOVE_ITEM', payload: item });
+  const removeItemHandler = async (item) => {
+    const { data } = await axios.put(`/api/cart/${item.itemId}`);
+    setCartItems(data.cart);
+    dispatch({ type: 'REMOVE_ITEM', payload: data.cart });
   };
 
   const { data: session } = useSession();
 
   const updateCartHandler = async (item, qty) => {
     const quantity = Number(qty);
-    const { data } = await axios.get(`/api/products/${item._id}`);
-    if (data.countInStock < quantity) {
-      return toast.error('Sorry out of stock');
+    const { data } = await axios.get('/api/cart');
+
+    const existItem = data.cart.find((i) => i.itemId === item.itemId);
+
+    if (existItem) {
+      const updateQuantity = {
+        itemId: item.itemId,
+        quantity: quantity,
+      };
+      try {
+        const { data } = await axios.put('/api/cart', updateQuantity);
+        dispatch({
+          type: 'CART_ADD_ITEM',
+          payload: data.cart,
+        });
+        setCartItems(data.cart);
+
+        toast.success('Updating successfully');
+      } catch (error) {
+        toast.error(error.response.data);
+      }
     }
-    dispatch({ type: 'CART_ADD_ITEM', payload: { ...item, quantity } });
-    toast.success('updated successfully');
+
+    // const { data } = await axios.get(`/api/products/${item._id}`);
+    // if (data.countInStock < quantity) {
+    //   return toast.error('Sorry out of stock');
+    // }
+    // dispatch({ type: 'CART_ADD_ITEM', payload: { ...item, quantity } });
+    // toast.success('updated successfully');
   };
 
   const handleCheckOut = () => {
@@ -63,9 +97,14 @@ const CartPage = () => {
               </thead>
               <tbody>
                 {cartItems.map((item) => (
-                  <tr key={item.slug} className='border-b'>
+                  <tr key={item.itemId} className='border-b'>
                     <td>
-                      <Link href={`/product/${item.slug}`}>
+                      <Link
+                        href={`/product/${item.name
+                          .split(' ')
+                          .join('-')
+                          .toLowerCase()}`}
+                      >
                         <span className='flex items-center'>
                           <Image
                             src={item.image}
@@ -90,9 +129,12 @@ const CartPage = () => {
                             {x + 1}
                           </option>
                         ))}
+                        {/* <option>{item.quantity}</option> */}
                       </select>
                     </td>
-                    <td className='p-5 text-right'>${item.price}</td>
+                    <td className='p-5 text-right'>
+                      ${item.price * item.quantity}
+                    </td>
                     <td className='p-5 text-center'>
                       <button onClick={() => removeItemHandler(item)}>
                         <XCircleIcon className='h-5 w-5'></XCircleIcon>
@@ -128,3 +170,15 @@ const CartPage = () => {
 };
 
 export default dynamic(() => Promise.resolve(CartPage), { ssr: false });
+
+// export async function getServerSideProps(context) {
+//   const { params, req, res } = context;
+
+//   const { data } = await axios.get('/api/cart');
+
+//   return {
+//     props: {
+//       cart: data,
+//     },
+//   };
+// }
