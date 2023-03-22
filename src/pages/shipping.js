@@ -21,7 +21,7 @@ const ShippingScreen = () => {
 
   useEffect(() => {
     if (!shippingAddress) {
-      return;
+      console.log('no address');
     }
     setValue('fullName', shippingAddress.fullName);
     setValue('address', shippingAddress.address);
@@ -35,19 +35,19 @@ const ShippingScreen = () => {
       type: 'SAVE_SHIPPING_ADDRESS',
       payload: { fullName, address, city, post, country },
     });
-    Cookies.set(
-      'cart',
-      JSON.stringify({
-        ...cart,
-        shippingAddress: {
-          fullName,
-          address,
-          city,
-          post,
-          country,
-        },
-      })
-    );
+    // Cookies.set(
+    //   'cart',
+    //   JSON.stringify({
+    //     ...cart,
+    //     shippingAddress: {
+    //       fullName,
+    //       address,
+    //       city,
+    //       post,
+    //       country,
+    //     },
+    //   })
+    // );
   };
   return (
     <Layout title='Shipping Address'>
