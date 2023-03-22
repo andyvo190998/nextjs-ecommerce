@@ -78,11 +78,19 @@ export default function Layout({ title, children }) {
                         Profile
                       </Link>
                     </Menu.Item>
-                    <Menu.Item>
-                      <Link className='dropdown-link' href='/history'>
-                        Order History
-                      </Link>
-                    </Menu.Item>
+                    {!session.user.isAdmin ? (
+                      <Menu.Item>
+                        <Link className='dropdown-link' href='/history'>
+                          Order History
+                        </Link>
+                      </Menu.Item>
+                    ) : (
+                      <Menu.Item>
+                        <Link className='dropdown-link' href='/dashboard'>
+                          Dash Board
+                        </Link>
+                      </Menu.Item>
+                    )}
                     <Menu.Item>
                       <a
                         className='dropdown-link'
