@@ -4,7 +4,6 @@ import CheckoutWizard from '@/components/CheckoutWizard';
 import { useRouter } from 'next/router';
 import { Store } from '@/utils/store';
 import { toast } from 'react-toastify';
-import Cookies from 'js-cookie';
 
 const PaymentScreen = () => {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('');
@@ -19,19 +18,14 @@ const PaymentScreen = () => {
       return toast.error('Payment Method is required');
     }
     dispatch({ type: 'SAVE_PAYMENT_METHOD', payload: selectedPaymentMethod });
-    Cookies.set(
-      'cart',
-      JSON.stringify({
-        ...cart,
-        paymentMethod: selectedPaymentMethod,
-      })
-    );
+    console.log(paymentMethod);
+
     router.push('/placeorder');
   };
 
   useEffect(() => {
     if (!shippingAddress.address) {
-      return router.push('/shipping');
+      router.push('/shipping');
     }
     setSelectedPaymentMethod(paymentMethod || '');
   }, [paymentMethod, router, shippingAddress.address]);
