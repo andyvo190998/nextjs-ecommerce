@@ -1,6 +1,6 @@
+/* eslint-disable @next/next/no-img-element */
 import Layout from '@/components/Layout';
 import { Store } from '@/utils/store';
-import Image from 'next/image';
 import Link from 'next/link';
 import React, { useContext, useEffect, useState } from 'react';
 import { XCircleIcon } from '@heroicons/react/outline';
@@ -21,7 +21,7 @@ const CartPage = () => {
     };
     getData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [cartItems.length, dispatch]);
+  }, [dispatch]);
 
   // const cartItems = [];
   const router = useRouter();
@@ -79,7 +79,7 @@ const CartPage = () => {
   return (
     <Layout title='Shopping Cart'>
       <h1 className='mb-4 text-xl'>Shopping Cart</h1>
-      {cartItems.length === 0 ? (
+      {!cartItems ? (
         <div>
           Cart is empty. <Link href='/'>Go shopping</Link>
         </div>
@@ -100,18 +100,19 @@ const CartPage = () => {
                   <tr key={item.itemId} className='border-b'>
                     <td>
                       <Link
-                        href={`/product/${item.name
-                          .split(' ')
-                          .join('-')
-                          .toLowerCase()}`}
+                        // href={`/product/${item.name
+                        //   .split(' ')
+                        //   .join('-')
+                        //   .toLowerCase()}`}
+                        href={`/product/${item.itemId}`}
                       >
                         <span className='flex items-center'>
-                          <Image
+                          <img
                             src={item.image}
                             alt={item.name}
                             width={50}
                             height={50}
-                          ></Image>
+                          />
                           &nbsp;
                           {item.name}
                         </span>

@@ -9,7 +9,12 @@ function reducer(state, action) {
     case 'FETCH_REQUEST':
       return { ...state, loading: true, error: '' };
     case 'FETCH_SUCCESS':
-      return { ...state, loading: false, orders: action.payload, error: '' };
+      return {
+        ...state,
+        loading: false,
+        orders: action.payload,
+        error: '',
+      };
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
 
@@ -28,7 +33,7 @@ const OrderHistoryScreen = () => {
     const fetchOrders = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios(`/api/orders/history`);
+        const { data } = await axios.get(`/api/orders/history`);
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (error) {
         dispatch({ type: 'FETCH_FAIL', payload: getError(error) });
@@ -38,7 +43,7 @@ const OrderHistoryScreen = () => {
   }, []);
   return (
     <Layout title='Order History'>
-      <h1>Order History</h1>
+      {orders.length === 0 ? '' : <h1>Order History</h1>}
       {loading ? (
         <div>Loading...</div>
       ) : error ? (
@@ -46,25 +51,27 @@ const OrderHistoryScreen = () => {
       ) : (
         <div className='overflow-x-auto'>
           <table className='min-w-full'>
-            <thead className='border-b'>
-              <tr>
-                <th className='px-5 text-left'>ID</th>
-                <th className='px-5 text-right'>DATE</th>
-                <th className='px-5 text-right'>TOTAL</th>
-                <th className='px-5 text-right'>PAID</th>
-                <th className='px-5 text-right'>DELIVERED</th>
-                <th className='px-5 text-right'>ACTION</th>
-              </tr>
-            </thead>
+            {orders.length === 0 ? (
+              <div>Order history is empty</div>
+            ) : (
+              <thead className='border-b'>
+                <tr>
+                  <th className='px-5 text-left'>ID</th>
+                  <th className='px-5 text-right'>DATE</th>
+                  <th className='px-5 text-right'>TOTAL</th>
+                  <th className='px-5 text-right'>PAID</th>
+                  <th className='px-5 text-right'>DELIVERED</th>
+                  <th className='px-5 text-right'>ACTION</th>
+                </tr>
+              </thead>
+            )}
 
             <tbody>
               {orders.map((order) => (
                 <tr key={order._id} className='border-b'>
-                  <td className='p-5 text-left'>
-                    {order._id.substring(20, 24)}
-                  </td>
+                  <td className='p-5 '>{order._id.substring(20, 24)}</td>
                   <td className='p-5 text-right'>
-                    {order._id.substring(20, 24)}
+                    {order.createdAt.substring(5, 10)}
                   </td>
                   <td className='p-5 text-right'>${order.totalPrice}</td>
                   <td className='p-5 text-right'>
@@ -72,13 +79,13 @@ const OrderHistoryScreen = () => {
                       ? `${order.paidAt.subString(0, 10)}`
                       : 'not paid'}
                   </td>
-                  <td className='p-5'>
+                  <td className='p-5 text-right'>
                     {order.isDelivered
                       ? `${order.deliveredAt.subString(0, 10)}`
                       : 'not delivered'}
                   </td>
-                  <td className='p-5'>
-                    <Link href={`/oder/${order._id}`} passHref>
+                  <td className='p-5 text-right'>
+                    <Link href={`/order/${order._id}`} passHref>
                       <span>Detail</span>
                     </Link>
                   </td>

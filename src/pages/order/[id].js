@@ -44,7 +44,7 @@ const OrderScreen = () => {
     if (!state.order._id || (state.order._id && state.order._id !== orderId)) {
       fetchOrder();
     }
-  }, [orderId, state.order]);
+  }, []);
 
   const {
     shippingAddress,
@@ -61,8 +61,9 @@ const OrderScreen = () => {
   } = state.order;
 
   return (
+    // <>asd</>
     <Layout title={`Order ${orderId}`}>
-      <h1 className='mb-4 text-xl'>{`Order ${orderId}`}</h1>
+      <h1 className='mb-4 text-xl'>{`Order: ${orderId}`}</h1>
       {state.loading ? (
         <div>Loading...</div>
       ) : state.error ? (

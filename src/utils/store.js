@@ -27,7 +27,6 @@ const reducer = (state, action) => {
       //       item.name === existItem.name ? newItem : item
       //     )
       //   : [...state.cart.cartItems, newItem];
-      Cookies.set('cart', JSON.stringify({ newItem }));
       return {
         ...state,
         cart: {
@@ -44,19 +43,17 @@ const reducer = (state, action) => {
       // );
       const cartItems = action.payload;
       Cookies.set('cart', JSON.stringify({ cartItems }));
-      return { cart: { cartItems } };
+      return { cart: { ...state.cart, cartItems } };
     }
 
     case 'CART_CLEAR_ITEMS':
       console.log('CART_CLEAR_ITEMS');
       return {
-        ...state,
         cart: { ...state.cart, cartItems: [] },
       };
     case 'CART_RESET':
       console.log('CART_RESET');
       return {
-        ...state,
         cart: {
           cartItems: [],
           shippingAddress: { location: {} },
@@ -66,7 +63,6 @@ const reducer = (state, action) => {
 
     case 'SAVE_SHIPPING_ADDRESS':
       console.log('SAVE_SHIPPING_ADDRESS');
-      console.log(action.payload);
       return {
         cart: {
           cartItems: state.cart.cartItems,

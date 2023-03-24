@@ -24,7 +24,6 @@ const PlaceOrderScreen = () => {
       setCartItems([...data.cart]);
     };
     getData();
-    console.log(cartItems);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -74,6 +73,7 @@ const PlaceOrderScreen = () => {
           cartItems: [],
         })
       );
+      await axios.delete('api/orders/history');
       router.push(`/order/${data._id}`);
     } catch (err) {
       setLoading(false);
@@ -82,7 +82,6 @@ const PlaceOrderScreen = () => {
   };
 
   return (
-    // <></>
     <Layout title='Place Order'>
       <CheckoutWizard activeStep={3} />
       <h1 className='mb-4 text-xl'>Place Order</h1>
