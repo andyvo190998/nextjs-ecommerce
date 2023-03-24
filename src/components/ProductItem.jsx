@@ -23,7 +23,6 @@ const ProductItem = ({ product }) => {
     };
 
     if (!data) {
-      console.log('cart is not exist');
       toast.success('Adding successfully');
       const { data } = await axios.post('api/cart', newItem);
       dispatch({
@@ -38,12 +37,6 @@ const ProductItem = ({ product }) => {
           itemId: product._id,
           quantity: existItem.quantity + 1,
         };
-        // toast.success('Adding successfully');
-        // const { data } = await axios.put('api/cart', updateQuantity);
-        // dispatch({
-        //   type: 'CART_ADD_ITEM',
-        //   payload: data.cart,
-        // });
         try {
           const { data } = await axios.put('/api/cart', updateQuantity);
           dispatch({
@@ -64,9 +57,13 @@ const ProductItem = ({ product }) => {
       }
     }
   };
+
+  const saveItem = async () => {
+    console.log('saved');
+  };
   return (
     <div className='card'>
-      <Link href={`/product/${product.slug}`}>
+      <Link href={`/product/${product._id}`}>
         <span>
           <img
             src={product.image}
@@ -76,20 +73,29 @@ const ProductItem = ({ product }) => {
         </span>
       </Link>
       <div className='flex flex-col items-center justify-center p-5'>
-        <Link href={`/product/${product.slug}`}>
+        <Link href={`/product/${product._id}`}>
           <span>
             <h2 className='text-lg'>{product.name}</h2>
           </span>
         </Link>
         <p className='mb-2'>{product.brand}</p>
         <p>${product.price}</p>
-        <button
-          onClick={() => addToCartHandler(product)}
-          className='primary-button'
-          type='button'
-        >
-          Add to cart
-        </button>
+        <div>
+          <button
+            onClick={() => addToCartHandler(product)}
+            className='primary-button'
+            type='button'
+          >
+            Add to cart
+          </button>
+          <button
+            onClick={() => saveItem(product)}
+            className='primary-button ml-2'
+            type='button'
+          >
+            Save
+          </button>
+        </div>
       </div>
     </div>
   );

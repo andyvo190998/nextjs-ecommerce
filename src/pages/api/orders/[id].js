@@ -1,5 +1,6 @@
-const { default: Order } = require('@/components/models/Order');
-const { default: db } = require('@/utils/db');
+import Order from '@/components/models/Order';
+import db from '@/utils/db';
+
 const { getSession } = require('next-auth/react');
 
 const handler = async (req, res) => {
@@ -9,10 +10,15 @@ const handler = async (req, res) => {
   }
 
   await db.connect();
-
-  const order = await Order.find({ user: session.user._id });
-  await db.disconnect();
-  res.send(order);
+  if (session.user.isAdmin) {
+    await db.disconnect();
+    const order = await Order.findById(req.query.id);
+    res.send(order);
+  } else {
+    const order = await Order.findOne({ user: session.user._id });
+    await db.disconnect();
+    res.send(order);
+  }
 };
 
 export default handler;

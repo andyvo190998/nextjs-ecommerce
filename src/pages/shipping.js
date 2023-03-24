@@ -1,7 +1,6 @@
 import CheckoutWizard from '@/components/CheckoutWizard';
 import Layout from '@/components/Layout';
 import { Store } from '@/utils/store';
-import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import React, { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -20,9 +19,9 @@ const ShippingScreen = () => {
   const { shippingAddress } = cart;
 
   useEffect(() => {
-    if (!shippingAddress) {
-      console.log('no address');
-    }
+    // if (!shippingAddress) {
+    //   console.log('no address');
+    // }
     setValue('fullName', shippingAddress.fullName);
     setValue('address', shippingAddress.address);
     setValue('city', shippingAddress.city);

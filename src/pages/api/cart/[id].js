@@ -4,7 +4,6 @@ import { getSession } from 'next-auth/react';
 
 const handler = async (req, res) => {
   if (req.method === 'PUT') {
-    console.log('PUT running');
     const { id } = req.query;
     const session = await getSession({ req: req });
 
@@ -26,7 +25,6 @@ const handler = async (req, res) => {
     await db.disconnect();
     return;
   }
-  console.log(req.body);
   const session = await getSession({ req: req });
 
   if (!session) {
@@ -37,7 +35,6 @@ const handler = async (req, res) => {
     cart: { $elemMatch: { itemId: req.query.id } },
     user: session.user._id,
   });
-  console.log(data);
   res.status(201).send(data);
   await db.disconnect();
 };

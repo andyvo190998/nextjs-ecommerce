@@ -10,7 +10,6 @@ const handler = async (req, res) => {
     await db.connect();
 
     const existingCart = await Cart2.findOne({ user: user._id });
-    console.log(existingCart);
 
     if (!existingCart) {
       const newItem = await new Cart2({
@@ -65,17 +64,21 @@ const handler = async (req, res) => {
     const currentItem = existingCart.cart.find(
       (item) => item.itemId === req.body.itemId
     );
+
+    // if (currentItem.countInStock < currentItem.quantity) {
+    //   if (currentItem.countInStock === currentItem.quantity) {
+    //     const data = await Cart2.findOneAndUpdate(
+    //       { 'cart.itemId': req.body.itemId, user: session.user._id },
+    //       { $set: { 'cart.$.quantity': inputQuantity } },
+    //       { returnOriginal: false }
+    //     );
+    //     res.status(201).send(data);
+    //   }
+    //   return res.status(404).send('Product is out of stock!');
+    // }
+
     if (currentItem.countInStock <= currentItem.quantity) {
-      if (currentItem.countInStock <= currentItem.quantity) {
-        const data = await Cart2.findOneAndUpdate(
-          { 'cart.itemId': req.body.itemId, user: session.user._id },
-          { $set: { 'cart.$.quantity': inputQuantity } },
-          { returnOriginal: false }
-        );
-        res.status(201).send(data);
-      }
-      res.status(404).send('Product is out of stock!');
-      return;
+      return res.status(404).send('Product is out of stock!');
     }
 
     const data = await Cart2.findOneAndUpdate(

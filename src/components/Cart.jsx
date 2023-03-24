@@ -1,7 +1,6 @@
 import React from 'react';
 
 const Cart = (props) => {
-  console.log(props.cart.name);
   return (
     <div>
       {/* {props.name} */}

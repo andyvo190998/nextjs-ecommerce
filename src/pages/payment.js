@@ -18,7 +18,6 @@ const PaymentScreen = () => {
       return toast.error('Payment Method is required');
     }
     dispatch({ type: 'SAVE_PAYMENT_METHOD', payload: selectedPaymentMethod });
-    console.log(paymentMethod);
 
     router.push('/placeorder');
   };
