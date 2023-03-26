@@ -65,18 +65,6 @@ const handler = async (req, res) => {
       (item) => item.itemId === req.body.itemId
     );
 
-    // if (currentItem.countInStock < currentItem.quantity) {
-    //   if (currentItem.countInStock === currentItem.quantity) {
-    //     const data = await Cart2.findOneAndUpdate(
-    //       { 'cart.itemId': req.body.itemId, user: session.user._id },
-    //       { $set: { 'cart.$.quantity': inputQuantity } },
-    //       { returnOriginal: false }
-    //     );
-    //     res.status(201).send(data);
-    //   }
-    //   return res.status(404).send('Product is out of stock!');
-    // }
-
     if (currentItem.countInStock <= currentItem.quantity) {
       return res.status(404).send('Product is out of stock!');
     }

@@ -100,10 +100,6 @@ const CartPage = () => {
                   <tr key={item.itemId} className='border-b'>
                     <td>
                       <Link
-                        // href={`/product/${item.name
-                        //   .split(' ')
-                        //   .join('-')
-                        //   .toLowerCase()}`}
                         href={`/product/${item.itemId}`}
                       >
                         <span className='flex items-center'>
