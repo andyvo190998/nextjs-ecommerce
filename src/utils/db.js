@@ -5,6 +5,7 @@ const connection = {};
 async function connect() {
   if (connection.isConnected) {
     console.log('already connected');
+    console.log(process.env.NEXTAUTH_URL);
     return;
   }
   if (mongoose.connections.length > 0) {

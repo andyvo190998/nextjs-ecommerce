@@ -1,9 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
 import CheckoutWizard from '@/components/CheckoutWizard';
 import Layout from '@/components/Layout';
 import Link from 'next/link';
 import React, { useContext, useEffect, useState } from 'react';
 import { Store } from '@/utils/store';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import { getError } from '@/utils/error';
@@ -17,6 +17,8 @@ const PlaceOrderScreen = () => {
   const { shippingAddress, paymentMethod } = cart;
 
   const [cartItems, setCartItems] = useState([]);
+
+  const url = process.env.API_KEY;
 
   useEffect(() => {
     const getData = async () => {
@@ -46,9 +48,9 @@ const PlaceOrderScreen = () => {
 
   useEffect(() => {
     if (!paymentMethod) {
-      router.push('/payment');
+      router.push(`${url}/payment`);
     }
-  }, [paymentMethod, router]);
+  }, [paymentMethod, router, url]);
 
   const [loading, setLoading] = useState(false);
 
@@ -108,7 +110,7 @@ const PlaceOrderScreen = () => {
               <h2 className='mb-2 text-lg'>Payment Method</h2>
               <div>{paymentMethod}</div>
               <div className='mt-4'>
-                <Link href='/payment'>Edit</Link>
+                <Link href={`${url}/payment`}>Edit</Link>
               </div>
             </div>
 
@@ -120,7 +122,7 @@ const PlaceOrderScreen = () => {
                     <th className='px-5 text-left'>Item</th>
                     <th className='p-5 text-right'>Quantity</th>
                     <th className='p-5 text-right'>Price</th>
-                    <th className='p-5 text-right'>Stubtotal</th>
+                    <th className='p-5 text-right'>Subtotal</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -129,12 +131,12 @@ const PlaceOrderScreen = () => {
                       <td>
                         <Link href={`/product/${item.slug}`}>
                           <span className='flex items-center'>
-                            <Image
+                            <img
                               src={item.image}
                               alt={item.name}
                               width={50}
                               height={50}
-                            ></Image>
+                            ></img>
                             &nbsp;
                             {item.name}
                           </span>

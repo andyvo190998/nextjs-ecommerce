@@ -5,7 +5,9 @@ import { useRouter } from 'next/router';
 import React, { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
-const ShippingScreen = () => {
+export default function ShippingScreen() {
+  const key = process.env.API_KEY;
+
   const router = useRouter();
   const {
     handleSubmit,
@@ -19,9 +21,6 @@ const ShippingScreen = () => {
   const { shippingAddress } = cart;
 
   useEffect(() => {
-    // if (!shippingAddress) {
-    //   console.log('no address');
-    // }
     setValue('fullName', shippingAddress.fullName);
     setValue('address', shippingAddress.address);
     setValue('city', shippingAddress.city);
@@ -34,19 +33,6 @@ const ShippingScreen = () => {
       type: 'SAVE_SHIPPING_ADDRESS',
       payload: { fullName, address, city, post, country },
     });
-    // Cookies.set(
-    //   'cart',
-    //   JSON.stringify({
-    //     ...cart,
-    //     shippingAddress: {
-    //       fullName,
-    //       address,
-    //       city,
-    //       post,
-    //       country,
-    //     },
-    //   })
-    // );
   };
   return (
     <Layout title='Shipping Address'>
@@ -118,7 +104,7 @@ const ShippingScreen = () => {
         </div>
         <div className='mb-4'>
           <button
-            onClick={() => router.push('/payment')}
+            onClick={() => router.push(`${key}/payment`)}
             className='primary-button hover:bg-violet-200 active:bg-amber-500'
           >
             Next
@@ -127,7 +113,6 @@ const ShippingScreen = () => {
       </form>
     </Layout>
   );
-};
+}
 
-export default ShippingScreen;
 ShippingScreen.auth = true;
