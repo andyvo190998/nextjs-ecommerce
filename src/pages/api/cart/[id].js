@@ -10,7 +10,6 @@ const handler = async (req, res) => {
     if (!session) {
       return res.status(401).send('signin required');
     }
-    console.log(id, session.user._id);
 
     await db.connect();
     const data = await Cart2.findOneAndUpdate(

@@ -58,8 +58,17 @@ const ProductItem = ({ product }) => {
     }
   };
 
-  const saveItem = async () => {
-    console.log('saved');
+  const saveItem = async (product) => {
+    try {
+      const { data } = await axios.post('/api/save', product);
+      toast.success('Saving successfully');
+      dispatch({
+        type: 'SAVE_ITEM',
+        payload: data.item,
+      });
+    } catch (error) {
+      toast.error(error.response.data.message);
+    }
   };
   return (
     <div className='card'>
@@ -93,7 +102,7 @@ const ProductItem = ({ product }) => {
             className='primary-button ml-2'
             type='button'
           >
-            Save
+            Save Item
           </button>
         </div>
       </div>

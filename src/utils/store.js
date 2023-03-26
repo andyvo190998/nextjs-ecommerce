@@ -1,15 +1,9 @@
 import { createContext, useReducer } from 'react';
-import Cookies from 'js-cookie';
 
 export const Store = createContext();
 
-// const initialState = {
-//   //cookies save data is string and json.parse convert cookies into json
-//   cart: Cookies.get('cart')
-//     ? JSON.parse(Cookies.get('cart'))
-//     : { cartItems: [], shippingAddress: {} },
-// };
 const initialState = {
+  saveItem: [],
   cart: { cartItems: [], shippingAddress: {} },
 };
 
@@ -19,14 +13,6 @@ const reducer = (state, action) => {
       console.log('CART_ADD_ITEM');
       const newItem = action.payload;
 
-      // const existItem = state.cart.cartItems.find(
-      //   (item) => item.slug === newItem.slug
-      // );
-      // const cartItems = existItem
-      //   ? state.cart.cartItems.map((item) =>
-      //       item.name === existItem.name ? newItem : item
-      //     )
-      //   : [...state.cart.cartItems, newItem];
       return {
         ...state,
         cart: {
@@ -36,14 +22,21 @@ const reducer = (state, action) => {
         },
       };
     }
+
+    case 'SAVE_ITEM': {
+      console.log('SAVE_ITEM');
+      return {
+        ...state,
+        saveItem: action.payload,
+      };
+    }
     case 'REMOVE_ITEM': {
       console.log('REMOVE_ITEM');
       // const cartItems = state.cart.cartItems.filter(
       //   (item) => item.slug !== action.payload.slug
       // );
       const cartItems = action.payload;
-      Cookies.set('cart', JSON.stringify({ cartItems }));
-      return { cart: { ...state.cart, cartItems } };
+      return { ...state, cart: { ...state.cart, cartItems } };
     }
 
     case 'CART_CLEAR_ITEMS':
