@@ -17,7 +17,7 @@ const PlaceOrderScreen = () => {
 
   const [cartItems, setCartItems] = useState([]);
 
-  const url = process.env.API_KEY;
+  const url = process.env.NEXTAUTH_URL;
 
   useEffect(() => {
     const getData = async () => {

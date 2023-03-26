@@ -6,7 +6,7 @@ import React, { useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 
 export default function ShippingScreen() {
-  const key = process.env.API_KEY;
+  const key = process.env.NEXTAUTH_URL;
 
   const router = useRouter();
   const {

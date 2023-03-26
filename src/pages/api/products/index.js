@@ -5,7 +5,7 @@ import { getSession } from 'next-auth/react';
 const handler = async (req, res) => {
   if (req.method === 'POST') {
     console.log('post create new product');
-    const session = getSession({ req: req });
+    const session = await getSession({ req: req });
     if (!session) {
       return res.status(401).send('Login require');
     }
@@ -39,7 +39,7 @@ const handler = async (req, res) => {
   } else if (req.method === 'PUT') {
     console.log('Put here');
     const updateItem = req.body;
-    const session = getSession({ req: req });
+    const session = await getSession({ req: req });
 
     if (!session) {
       return res.status(401).send('Login require');
