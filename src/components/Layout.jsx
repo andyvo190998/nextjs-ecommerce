@@ -6,7 +6,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Menu } from '@headlessui/react';
-import Cookies from 'js-cookie';
 import axios from 'axios';
 
 export default function Layout({ title, children }) {
@@ -17,7 +16,6 @@ export default function Layout({ title, children }) {
   const [cartItemsCount, setCartItemsCount] = useState([]);
   const handleLogout = () => {
     dispatch({ type: 'CART_RESET' });
-    Cookies.remove('cart');
     signOut({ callbackUrl: '/login' });
   };
 

@@ -7,7 +7,6 @@ import { Store } from '@/utils/store';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 import { getError } from '@/utils/error';
-import Cookies from 'js-cookie';
 import axios from 'axios';
 
 const PlaceOrderScreen = () => {
@@ -68,13 +67,6 @@ const PlaceOrderScreen = () => {
       });
       setLoading(false);
       dispatch({ type: 'CART_CLEAR_ITEMS' });
-      Cookies.set(
-        'cart',
-        JSON.stringify({
-          ...cart,
-          cartItems: [],
-        })
-      );
       await axios.delete('api/orders/history');
       router.push(`/order/${data._id}`);
     } catch (err) {

@@ -44,7 +44,7 @@ const OrderScreen = () => {
     if (!state.order._id || (state.order._id && state.order._id !== orderId)) {
       fetchOrder();
     }
-  }, []);
+  }, [orderId, state.order._id]);
 
   const {
     shippingAddress,
