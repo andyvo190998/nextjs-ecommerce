@@ -123,22 +123,22 @@ const LoginScreen = () => {
             {login ? 'Login' : 'Register'}
           </button>
         </div>
+        {login ? (
+          <div className='mb-4'>
+            Don&apos;t have an account? &nbsp;
+            <button className='text-blue-500' onClick={() => setLogin(false)}>
+              Register here
+            </button>
+          </div>
+        ) : (
+          <div className='mb-4'>
+            You already have an account? &nbsp;
+            <button className='text-blue-500' onClick={() => setLogin(true)}>
+              Login here
+            </button>
+          </div>
+        )}
       </form>
-      {login ? (
-        <div className='mb-4'>
-          Don&apos;t have an account? &nbsp;
-          <button className='text-blue-500' onClick={() => setLogin(false)}>
-            Register here
-          </button>
-        </div>
-      ) : (
-        <div className='mb-4'>
-          You already have an account? &nbsp;
-          <button className='text-blue-500' onClick={() => setLogin(true)}>
-            Login here
-          </button>
-        </div>
-      )}
     </Layout>
   );
 };

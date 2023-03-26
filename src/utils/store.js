@@ -42,11 +42,13 @@ const reducer = (state, action) => {
     case 'CART_CLEAR_ITEMS':
       console.log('CART_CLEAR_ITEMS');
       return {
+        ...state,
         cart: { ...state.cart, cartItems: [] },
       };
     case 'CART_RESET':
       console.log('CART_RESET');
       return {
+        ...state,
         cart: {
           cartItems: [],
           shippingAddress: { location: {} },
@@ -57,6 +59,7 @@ const reducer = (state, action) => {
     case 'SAVE_SHIPPING_ADDRESS':
       console.log('SAVE_SHIPPING_ADDRESS');
       return {
+        ...state,
         cart: {
           cartItems: state.cart.cartItems,
           shippingAddress:

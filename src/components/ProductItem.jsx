@@ -77,7 +77,7 @@ const ProductItem = ({ product }) => {
           <img
             src={product.image}
             alt={product.name}
-            className='rounded shadow'
+            className='rounded shadow h-80 w-96'
           />
         </span>
       </Link>
@@ -89,7 +89,7 @@ const ProductItem = ({ product }) => {
         </Link>
         <p className='mb-2'>{product.brand}</p>
         <p>${product.price}</p>
-        <div>
+        <div className='flex'>
           <button
             onClick={() => addToCartHandler(product)}
             className='primary-button'
@@ -102,7 +102,7 @@ const ProductItem = ({ product }) => {
             className='primary-button ml-2'
             type='button'
           >
-            Save Item
+            Save
           </button>
         </div>
       </div>
