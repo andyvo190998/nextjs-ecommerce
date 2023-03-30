@@ -4,7 +4,6 @@ import { getSession } from 'next-auth/react';
 
 const handler = async (req, res) => {
   if (req.method === 'POST') {
-    console.log('Cart request');
     const { itemId, quantity, image, name, price, countInStock } = req.body;
     const { user } = await getSession({ req: req });
     await db.connect();
@@ -44,7 +43,7 @@ const handler = async (req, res) => {
       res.status(201).send(data);
     }
   } else if (req.method === 'GET') {
-    console.log('get123');
+
     const { user } = await getSession({ req: req });
 
     await db.connect();
@@ -52,7 +51,6 @@ const handler = async (req, res) => {
     const cart = await Cart2.findOne({ user: user._id });
     res.status(201).send(cart);
   } else if (req.method === 'PUT') {
-    console.log('Put');
 
     await db.connect();
 

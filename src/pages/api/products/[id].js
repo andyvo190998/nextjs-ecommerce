@@ -6,8 +6,6 @@ const { default: db } = require('@/utils/db');
 
 const handler = async (req, res) => {
   if (req.method === 'GET') {
-    console.log('get product');
-
     await db.connect();
     const product = await Product.findById(req.query.id);
     await db.disconnect();

@@ -54,7 +54,6 @@ const handler = async (req, res) => {
         user: session.user._id,
         'item.itemId': req.body._id,
       });
-      console.log(existingItem);
       if (existingItem) {
         return res.status(401).send({ message: 'Item is existed' });
       } else {

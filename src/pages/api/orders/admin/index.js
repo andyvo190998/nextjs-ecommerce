@@ -4,7 +4,6 @@ const { getSession } = require('next-auth/react');
 
 const handler = async (req, res) => {
   if (req.method === 'GET') {
-    console.log('get all order');
     const session = await getSession({ req });
 
     if (!session.user.isAdmin) {

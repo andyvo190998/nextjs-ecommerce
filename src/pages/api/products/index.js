@@ -4,7 +4,6 @@ import { getSession } from 'next-auth/react';
 
 const handler = async (req, res) => {
   if (req.method === 'POST') {
-    console.log('post create new product');
     const session = await getSession({ req: req });
     if (!session) {
       return res.status(401).send('Login require');
@@ -56,7 +55,6 @@ const handler = async (req, res) => {
     const result = await Product.findByIdAndUpdate(updateItem._id, updateItem, {
       new: true,
     });
-    console.log(result);
     res.send(result);
     await db.disconnect();
   }

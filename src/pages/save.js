@@ -85,7 +85,6 @@ const SaveScreen = () => {
     }
   };
 
-  console.log(state);
 
   return (
     <Layout title='Saved Item'>

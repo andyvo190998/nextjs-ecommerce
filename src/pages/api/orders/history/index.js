@@ -5,7 +5,6 @@ import { getSession } from 'next-auth/react';
 
 const handler = async (req, res) => {
   if (req.method === 'GET') {
-    console.log('get history');
     const session = await getSession({ req: req });
     if (!session) {
       return res.status(401).send({ message: 'login required!' });

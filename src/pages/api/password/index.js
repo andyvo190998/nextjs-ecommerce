@@ -5,8 +5,6 @@ import { getSession } from 'next-auth/react';
 
 const handler = async (req, res) => {
   if (req.method === 'PUT') {
-    console.log('update user password');
-
     const session = await getSession({ req });
 
     if (!session) {
