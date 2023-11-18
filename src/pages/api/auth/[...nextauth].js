@@ -46,25 +46,26 @@
 import User from '@/components/models/User';
 import db from '@/utils/db';
 import bcryptjs from 'bcryptjs';
-import NextAuth from 'next-auth';
+import nextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
-export default NextAuth({
+export default nextAuth({
   session: {
-    strategy: 'jwt',
+    jwt: true,
   },
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user?._id) token._id = user._id;
-      if (user?.isAdmin) token.isAdmin = user.isAdmin;
-      return token;
-    },
-    async session({ session, token }) {
-      if (token?._id) session.user._id = token._id;
-      if (token?.isAdmin) session.user.isAdmin = token.isAdmin;
-      return session;
-    },
-  },
+  // callbacks: {
+  //   async jwt({ token, user }) {
+  //     if (user?._id) token._id = user._id;
+  //     if (user?.isAdmin) token.isAdmin = user.isAdmin;
+  //     return token;
+  //   },
+  //   async session({ session, token }) {
+  //     if (token?._id) session.user._id = token._id;
+  //     if (token?.isAdmin) session.user.isAdmin = token.isAdmin;
+  //     return session;
+  //   },
+  // },
+  // secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       async authorize(credentials) {

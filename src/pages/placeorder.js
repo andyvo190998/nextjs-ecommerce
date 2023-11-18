@@ -149,7 +149,7 @@ const PlaceOrderScreen = () => {
             </div>
           </div>
 
-          <div className='card p-5'>
+          <div style={{ height: 'fit-content' }} className='card p-5'>
             <h2 className='mb-2 text-lg'>Order Summary</h2>
             <ul>
               <li>

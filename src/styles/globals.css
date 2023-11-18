@@ -33,7 +33,7 @@ a {
 }
 
 .default-button {
-  @apply rounded bg-gray-100 py-2 px-4 text-black shadow outline-none
+  @apply rounded bg-gray-100 py-2 px-4 text-black shadow outline-none;
 }
 
 input,
